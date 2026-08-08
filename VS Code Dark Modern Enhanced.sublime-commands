@@ -1,0 +1,14 @@
+[
+    {
+        "caption": "VS Code Dark Modern: Select Enhanced Color Scheme",
+        "command": "vscode_dark_modern_select_enhanced_color_scheme"
+    },
+    {
+        "caption": "VS Code Dark Modern: Inspect Highlight",
+        "command": "vscode_dark_modern_inspect_highlight"
+    },
+    {
+        "caption": "VS Code Dark Modern: Check Semantic Highlighting",
+        "command": "vscode_dark_modern_check_semantic_highlighting"
+    }
+]

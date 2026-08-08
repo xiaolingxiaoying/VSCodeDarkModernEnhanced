@@ -1,0 +1,3 @@
+VS Code Dark Modern Enhanced updated
+
+If you use Sublime LSP semantic tokens, keep "semantic_highlighting": true enabled in LSP settings. Re-run `python tools/build_theme.py` after intentionally updating any bundled VS Code theme source.

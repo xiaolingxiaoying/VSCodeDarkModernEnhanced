@@ -1,0 +1,80 @@
+{
+    "groups": [
+        {
+            "name": "Semantic functions",
+            "tokens": ["function", "method", "event"],
+            "color_from": "entity.name.function"
+        },
+        {
+            "name": "Semantic macros",
+            "tokens": ["macro"],
+            "color_from": "meta.preprocessor"
+        },
+        {
+            "name": "Semantic types",
+            "tokens": ["type", "class", "interface", "struct", "enum", "namespace", "typeParameter"],
+            "color_from": "entity.name.type"
+        },
+        {
+            "name": "Semantic variables",
+            "tokens": ["variable", "parameter", "property"],
+            "color_from": "variable"
+        },
+        {
+            "name": "Semantic enum members",
+            "tokens": ["enumMember"],
+            "color_from": "variable.other.constant"
+        },
+        {
+            "name": "Semantic keywords",
+            "tokens": ["keyword", "modifier"],
+            "color_from": "keyword"
+        },
+        {
+            "name": "Semantic comments",
+            "tokens": ["comment"],
+            "color_from": "comment"
+        },
+        {
+            "name": "Semantic strings",
+            "tokens": ["string"],
+            "color_from": "string"
+        },
+        {
+            "name": "Semantic numbers",
+            "tokens": ["number"],
+            "color_from": "constant.numeric"
+        },
+        {
+            "name": "Semantic regular expressions",
+            "tokens": ["regexp"],
+            "color_from": "string.regexp"
+        },
+        {
+            "name": "Semantic operators",
+            "tokens": ["operator"],
+            "color_from": "keyword.operator"
+        },
+        {
+            "name": "Semantic decorators",
+            "tokens": ["decorator"],
+            "color_from": "entity.name.function"
+        },
+        {
+            "name": "Semantic labels",
+            "tokens": ["label"],
+            "color_from": "entity.name.label"
+        }
+    ],
+    "modifier_groups": [
+        {
+            "name": "Semantic readonly values",
+            "selectors": [
+                "variable.readonly",
+                "parameter.readonly",
+                "property.readonly"
+            ],
+            "color_from": "variable.other.constant"
+        }
+    ]
+}

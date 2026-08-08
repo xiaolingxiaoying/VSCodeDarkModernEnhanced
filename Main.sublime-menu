@@ -1,0 +1,29 @@
+[
+    {
+        "id": "preferences",
+        "children": [
+            {
+                "id": "package-settings",
+                "children": [
+                    {
+                        "caption": "VS Code Dark Modern Enhanced",
+                        "children": [
+                            {
+                                "caption": "Select Enhanced Color Scheme",
+                                "command": "vscode_dark_modern_select_enhanced_color_scheme"
+                            },
+                            {
+                                "caption": "Inspect Highlight",
+                                "command": "vscode_dark_modern_inspect_highlight"
+                            },
+                            {
+                                "caption": "Check Semantic Highlighting",
+                                "command": "vscode_dark_modern_check_semantic_highlighting"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

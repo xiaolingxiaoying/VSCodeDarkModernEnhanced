@@ -1,0 +1,199 @@
+"""Commands for the VS Code Dark Modern Enhanced color scheme.
+
+This module intentionally does not listen for buffer edits.  All normal
+highlighting is performed by Sublime's color-scheme engine and, when present,
+the LSP package's semantic-token support.
+"""
+
+from __future__ import annotations
+
+import importlib
+import json
+from typing import Any
+
+import sublime
+import sublime_plugin
+
+
+THEME_FILE = "VS Code Dark Modern Enhanced.sublime-color-scheme"
+FALLBACK_THEME_RESOURCE = "Packages/VS Code Dark Modern Enhanced/" + THEME_FILE
+LSP_SETTINGS_FILE = "LSP.sublime-settings"
+REPORT_FILE = "theme-build-report.json"
+
+
+def _theme_resource() -> str:
+    """Find the packaged scheme instead of assuming the package directory."""
+    resources = sublime.find_resources(THEME_FILE)
+    return resources[0] if resources else FALLBACK_THEME_RESOURCE
+
+
+def _selected_point(view: sublime.View) -> int:
+    selection = view.sel()
+    if selection:
+        return selection[0].begin()
+    return 0
+
+
+def _semantic_token_at(view: sublime.View, point: int) -> dict[str, Any] | None:
+    """Read LSP's in-memory token list when its optional API is available."""
+    try:
+        registry = importlib.import_module("LSP.plugin.core.registry")
+        listener = registry.windows.listener_for_view(view)
+        if listener is None:
+            return None
+        for session_view in listener.session_views_async():
+            for token in session_view.session_buffer.get_semantic_tokens():
+                if token.region.contains(point) and point < token.region.end():
+                    return {
+                        "type": token.type,
+                        "modifiers": list(token.modifiers),
+                        "server": session_view.session.config.name,
+                    }
+    except Exception:
+        # LSP is optional and its internal inspection API may change between
+        # releases. The color scheme itself does not depend on this helper.
+        return None
+    return None
+
+
+def _semantic_scope_for(token: dict[str, Any] | None) -> str | None:
+    if token is None:
+        return None
+    token_type = str(token["type"]).lower()
+    modifiers = token.get("modifiers") or []
+    modifier = ".{}".format(str(modifiers[0]).lower()) if modifiers else ""
+    return "meta.semantic-token.{}{}".format(token_type, modifier)
+
+
+def _load_provenance() -> list[dict[str, Any]]:
+    """Load the optional build report, without making it a runtime dependency."""
+    for resource in sublime.find_resources(REPORT_FILE):
+        try:
+            value = json.loads(sublime.load_resource(resource))
+        except (ValueError, OSError):
+            continue
+        provenance = value.get("provenance", []) if isinstance(value, dict) else []
+        if isinstance(provenance, list):
+            return [entry for entry in provenance if isinstance(entry, dict)]
+    return []
+
+
+def _provenance_for(scope_stack: str, preferred_scopes: list[str]) -> str | None:
+    """Return the highest-priority generated rule matching the inspected token."""
+    for entry in reversed(_load_provenance()):
+        selectors = entry.get("scope")
+        if not isinstance(selectors, str):
+            continue
+        candidates = [item.strip() for item in selectors.split(",")]
+        preferred_match = any(
+            preferred == candidate or preferred.startswith(candidate + ".")
+            for preferred in preferred_scopes
+            for candidate in candidates
+        )
+        syntax_match = any(sublime.score_selector(scope_stack, candidate) > 0 for candidate in candidates)
+        if preferred_match or syntax_match:
+            name = entry.get("name") or "unnamed rule"
+            source = entry.get("source") or "unknown source"
+            return "{} — {}".format(name, source)
+    return None
+
+
+def _semantic_highlighting_enabled() -> tuple[bool, bool]:
+    """Return (LSP is installed, semantic highlighting is enabled)."""
+    lsp_resources = sublime.find_resources(LSP_SETTINGS_FILE)
+    if not lsp_resources:
+        return False, False
+    return True, bool(sublime.load_settings(LSP_SETTINGS_FILE).get("semantic_highlighting", False))
+
+
+class VscodeDarkModernSelectEnhancedColorSchemeCommand(sublime_plugin.ApplicationCommand):
+    """Select this package's generated color scheme globally."""
+
+    def run(self) -> None:
+        settings = sublime.load_settings("Preferences.sublime-settings")
+        settings.set("color_scheme", _theme_resource())
+        sublime.save_settings("Preferences.sublime-settings")
+        sublime.status_message("VS Code Dark Modern Enhanced color scheme selected")
+
+
+class VscodeDarkModernInspectHighlightCommand(sublime_plugin.WindowCommand):
+    """Show scopes and resolved foreground information at the caret."""
+
+    def run(self) -> None:
+        view = self.window.active_view()
+        if view is None:
+            sublime.status_message("No active view to inspect")
+            return
+
+        point = _selected_point(view)
+        word_region = view.word(point)
+        text = view.substr(word_region) or view.substr(sublime.Region(point, min(point + 1, view.size())))
+        scope_name = view.scope_name(point).strip()
+        scopes = scope_name.split()
+        semantic_token = _semantic_token_at(view, point)
+        semantic_scope = _semantic_scope_for(semantic_token)
+        syntax_style = view.style_for_scope(scope_name)
+        semantic_style = view.style_for_scope(semantic_scope) if semantic_scope else None
+        lookup_scopes = ([semantic_scope] if semantic_scope else []) + list(reversed(scopes))
+        source_note = _provenance_for(scope_name, lookup_scopes)
+
+        lines = [
+            "VS Code Dark Modern Enhanced — Highlight Inspector",
+            "",
+            "Text: {}".format(repr(text)),
+            "Point: {}".format(point),
+            "",
+            "Syntax scopes:",
+            "  {}".format(scope_name or "(none)"),
+            "",
+            "Semantic token: {}".format(
+                "{} [{}] via {}".format(
+                    semantic_token["type"],
+                    ", ".join(semantic_token["modifiers"]) or "no modifiers",
+                    semantic_token["server"],
+                ) if semantic_token else "(none)"
+            ),
+            "Syntax foreground: {}".format(syntax_style.get("foreground", "(default)")),
+        ]
+        if semantic_style:
+            lines.append("Semantic foreground: {}".format(semantic_style.get("foreground", "(default)")))
+        if syntax_style.get("background"):
+            lines.append("Syntax background: {}".format(syntax_style["background"]))
+        if source_note:
+            lines.extend(("", "Generated rule source: {}".format(source_note)))
+        else:
+            lines.extend(("", "Generated rule source: unavailable (build report not packaged or no exact match)"))
+        sublime.message_dialog("\n".join(lines))
+
+
+class VscodeDarkModernCheckSemanticHighlightingCommand(sublime_plugin.WindowCommand):
+    """Report the optional LSP semantic-highlighting state without changing it."""
+
+    def run(self) -> None:
+        installed, enabled = _semantic_highlighting_enabled()
+        view = self.window.active_view()
+        active = False
+        if view is not None:
+            active = _semantic_token_at(view, _selected_point(view)) is not None
+
+        if not installed:
+            message = (
+                "Sublime LSP was not detected. Base syntax highlighting is active.\n\n"
+                "Install the LSP package and set \"semantic_highlighting\": true "
+                "in LSP.sublime-settings to enable semantic tokens."
+            )
+        elif active:
+            message = "Sublime LSP semantic highlighting is enabled and active in the current view."
+        elif not enabled:
+            message = (
+                "Sublime LSP is installed, but semantic highlighting is disabled.\n\n"
+                "Add \"semantic_highlighting\": true to LSP.sublime-settings. "
+                "This package does not change your LSP settings automatically."
+            )
+        else:
+            message = (
+                "Sublime LSP semantic highlighting is enabled. No semantic token is currently "
+                "visible at the caret; the current language server may not support it, may still "
+                "be starting, or the caret may be on unclassified text."
+            )
+        sublime.message_dialog(message)
