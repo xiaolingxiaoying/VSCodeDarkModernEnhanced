@@ -21,6 +21,8 @@ class PackageContractTests(unittest.TestCase):
     def test_required_runtime_resources_exist(self) -> None:
         required = {
             "VS Code Dark Modern Enhanced.sublime-color-scheme",
+            "VS Code Dark Modern.sublime-theme",
+            "tab_square_highlight_thin.png",
             "VS Code Dark Modern Enhanced.sublime-commands",
             "Main.sublime-menu",
             "dark_modern_enhanced.py",
@@ -31,6 +33,12 @@ class PackageContractTests(unittest.TestCase):
         }
         self.assertFalse([name for name in required if not (ROOT / name).is_file()])
         self.assertFalse((ROOT / "package-metadata.json").exists())
+
+    def test_ui_theme_uses_packaged_tab_highlight(self) -> None:
+        theme = json.loads((ROOT / "VS Code Dark Modern.sublime-theme").read_text(encoding="utf-8"))
+        textures = [rule.get("layer2.texture") for rule in theme["rules"]]
+        self.assertIn("tab_square_highlight_thin.png", textures)
+        self.assertFalse([texture for texture in textures if texture and texture.startswith("User/")])
 
     def test_no_continuous_buffer_processing_hooks(self) -> None:
         plugin = (ROOT / "dark_modern_enhanced.py").read_text(encoding="utf-8")

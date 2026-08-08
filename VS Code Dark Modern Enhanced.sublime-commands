@@ -4,6 +4,10 @@
         "command": "vscode_dark_modern_select_enhanced_color_scheme"
     },
     {
+        "caption": "VS Code Dark Modern: Select UI Theme",
+        "command": "vscode_dark_modern_select_ui_theme"
+    },
+    {
         "caption": "VS Code Dark Modern: Inspect Highlight",
         "command": "vscode_dark_modern_inspect_highlight"
     },
