@@ -342,6 +342,7 @@ def _build_enhancement_rules(
 def build(source: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     theme = resolve_theme(source)
     ui_mapping = _load_mapping("ui_colors.json")
+    sublime_ui_overrides = _load_mapping("sublime_ui_overrides.json")
     aliases = _load_mapping("scope_aliases.json")
     semantic_mapping = _load_mapping("semantic_tokens.json")
     enhancement_mapping = _load_mapping("enhancements.json")
@@ -359,6 +360,28 @@ def build(source: Path) -> tuple[dict[str, Any], dict[str, Any]]:
             "vscode_key": vscode_key,
             "source": traced.source,
             "color": traced.value,
+        })
+
+    override_source = sublime_ui_overrides.get("source")
+    overrides = sublime_ui_overrides.get("globals")
+    if not isinstance(override_source, str) or not isinstance(overrides, dict):
+        raise BuildError("sublime_ui_overrides.json requires string 'source' and object 'globals'")
+    option_globals = {"brackets_options", "bracket_contents_options"}
+    for name, value in overrides.items():
+        if not isinstance(name, str) or not isinstance(value, str):
+            raise BuildError("Sublime UI override names and values must be strings")
+        if name in option_globals:
+            if value != "underline":
+                raise BuildError(f"Unsupported Sublime UI option {name}={value!r}")
+        else:
+            _validate_color(value, f"sublime_ui_overrides.json: globals.{name}")
+        globals_output[name] = value
+        provenance.append({
+            "kind": "sublime-global-override",
+            "name": name,
+            "source": override_source,
+            "mapping": "mappings/sublime_ui_overrides.json",
+            "value": value,
         })
 
     token_rules, token_provenance = _convert_token_rules(theme.token_colors, aliases)

@@ -47,6 +47,8 @@ python tools/build_theme.py --check
 
 构建器只使用 Python 标准库，支持 VS Code JSONC 注释、尾随逗号和递归 `include`。它按 `dark_vs.json → dark_plus.json → dark_modern.json` 解析：父主题 token 规则优先输出，子主题规则后输出；`colors` 与 `semanticTokenColors` 由子主题覆盖。
 
+编辑器交互颜色通过 `mappings/sublime_ui_overrides.json` 保留旧版 Sublime 配色的设置：活动行号 `#CCCCCC`、光标 `#AEAFAD`、括号匹配下划线 `#D7BA7D`、选区及边框 `#264F78`。这些覆盖项同样会记录在 `theme-build-report.json` 中，重新构建不会丢失。
+
 ### 与旧版主题共存
 
 本包使用独立名称，不会覆盖 `Packages/User/VS Code Dark Modern.sublime-color-scheme`。旧配色可以继续保留、切换和对照。

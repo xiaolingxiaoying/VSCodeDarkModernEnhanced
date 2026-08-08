@@ -10,7 +10,14 @@
         "gutter_foreground": "#6E7681",
         "gutter_foreground_highlight": "#CCCCCC",
         "guide": "#404040",
-        "active_guide": "#707070"
+        "active_guide": "#707070",
+        "caret": "#AEAFAD",
+        "brackets_options": "underline",
+        "brackets_foreground": "#D7BA7D",
+        "bracket_contents_options": "underline",
+        "bracket_contents_foreground": "#D7BA7D",
+        "selection": "#264F78",
+        "selection_border": "#264F78"
     },
     "rules": [
         {

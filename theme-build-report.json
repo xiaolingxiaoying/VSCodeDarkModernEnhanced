@@ -209,6 +209,62 @@
             "color": "#707070"
         },
         {
+            "kind": "sublime-global-override",
+            "name": "gutter_foreground_highlight",
+            "source": "Packages/User/VS Code Dark Modern.sublime-color-scheme",
+            "mapping": "mappings/sublime_ui_overrides.json",
+            "value": "#CCCCCC"
+        },
+        {
+            "kind": "sublime-global-override",
+            "name": "caret",
+            "source": "Packages/User/VS Code Dark Modern.sublime-color-scheme",
+            "mapping": "mappings/sublime_ui_overrides.json",
+            "value": "#AEAFAD"
+        },
+        {
+            "kind": "sublime-global-override",
+            "name": "brackets_options",
+            "source": "Packages/User/VS Code Dark Modern.sublime-color-scheme",
+            "mapping": "mappings/sublime_ui_overrides.json",
+            "value": "underline"
+        },
+        {
+            "kind": "sublime-global-override",
+            "name": "brackets_foreground",
+            "source": "Packages/User/VS Code Dark Modern.sublime-color-scheme",
+            "mapping": "mappings/sublime_ui_overrides.json",
+            "value": "#D7BA7D"
+        },
+        {
+            "kind": "sublime-global-override",
+            "name": "bracket_contents_options",
+            "source": "Packages/User/VS Code Dark Modern.sublime-color-scheme",
+            "mapping": "mappings/sublime_ui_overrides.json",
+            "value": "underline"
+        },
+        {
+            "kind": "sublime-global-override",
+            "name": "bracket_contents_foreground",
+            "source": "Packages/User/VS Code Dark Modern.sublime-color-scheme",
+            "mapping": "mappings/sublime_ui_overrides.json",
+            "value": "#D7BA7D"
+        },
+        {
+            "kind": "sublime-global-override",
+            "name": "selection",
+            "source": "Packages/User/VS Code Dark Modern.sublime-color-scheme",
+            "mapping": "mappings/sublime_ui_overrides.json",
+            "value": "#264F78"
+        },
+        {
+            "kind": "sublime-global-override",
+            "name": "selection_border",
+            "source": "Packages/User/VS Code Dark Modern.sublime-color-scheme",
+            "mapping": "mappings/sublime_ui_overrides.json",
+            "value": "#264F78"
+        },
+        {
             "kind": "token",
             "name": "",
             "scope": "meta.embedded, source.groovy.embedded, string meta.image.inline.markdown, variable.legacy.builtin.python",

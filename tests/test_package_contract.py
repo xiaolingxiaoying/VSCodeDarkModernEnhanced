@@ -74,6 +74,22 @@ class PackageContractTests(unittest.TestCase):
             styles = set(rule.get("font_style", "").split())
             self.assertFalse(styles - supported, rule)
 
+    def test_legacy_editor_interaction_colors_are_packaged(self) -> None:
+        expected = {
+            "gutter_foreground_highlight": "#CCCCCC",
+            "caret": "#AEAFAD",
+            "brackets_options": "underline",
+            "brackets_foreground": "#D7BA7D",
+            "bracket_contents_options": "underline",
+            "bracket_contents_foreground": "#D7BA7D",
+            "selection": "#264F78",
+            "selection_border": "#264F78",
+        }
+        self.assertEqual(
+            {name: self.scheme["globals"].get(name) for name in expected},
+            expected,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
