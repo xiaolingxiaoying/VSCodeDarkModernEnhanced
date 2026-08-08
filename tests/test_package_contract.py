@@ -76,6 +76,7 @@ class PackageContractTests(unittest.TestCase):
 
     def test_legacy_editor_interaction_colors_are_packaged(self) -> None:
         expected = {
+            "line_highlight": "#2A2D2E",
             "gutter_foreground_highlight": "#CCCCCC",
             "caret": "#AEAFAD",
             "brackets_options": "underline",

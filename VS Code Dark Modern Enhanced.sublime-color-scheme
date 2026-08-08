@@ -11,6 +11,7 @@
         "gutter_foreground_highlight": "#CCCCCC",
         "guide": "#404040",
         "active_guide": "#707070",
+        "line_highlight": "#2A2D2E",
         "caret": "#AEAFAD",
         "brackets_options": "underline",
         "brackets_foreground": "#D7BA7D",
