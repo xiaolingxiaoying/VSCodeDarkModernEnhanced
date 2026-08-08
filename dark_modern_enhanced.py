@@ -17,6 +17,7 @@ import sublime_plugin
 
 THEME_FILE = "VS Code Dark Modern Enhanced.sublime-color-scheme"
 FALLBACK_THEME_RESOURCE = "Packages/VS Code Dark Modern Enhanced/" + THEME_FILE
+UI_THEME_FILE = "VS Code Dark Modern.sublime-theme"
 LSP_SETTINGS_FILE = "LSP.sublime-settings"
 REPORT_FILE = "theme-build-report.json"
 
@@ -114,6 +115,16 @@ class VscodeDarkModernSelectEnhancedColorSchemeCommand(sublime_plugin.Applicatio
         settings.set("color_scheme", _theme_resource())
         sublime.save_settings("Preferences.sublime-settings")
         sublime.status_message("VS Code Dark Modern Enhanced color scheme selected")
+
+
+class VscodeDarkModernSelectUiThemeCommand(sublime_plugin.ApplicationCommand):
+    """Select this package's VS Code Dark Modern UI theme globally."""
+
+    def run(self) -> None:
+        settings = sublime.load_settings("Preferences.sublime-settings")
+        settings.set("theme", UI_THEME_FILE)
+        sublime.save_settings("Preferences.sublime-settings")
+        sublime.status_message("VS Code Dark Modern UI theme selected")
 
 
 class VscodeDarkModernInspectHighlightCommand(sublime_plugin.WindowCommand):

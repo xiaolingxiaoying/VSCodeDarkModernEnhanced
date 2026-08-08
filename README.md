@@ -14,8 +14,9 @@
 2. 输入 `https://github.com/xiaolingxiaoying/VSCodeDarkModernEnhanced`（末尾不要加 `.git`）。
 3. 再运行 `Package Control: Install Package`，搜索并安装 **VS Code Dark Modern Enhanced**。
 
-包被默认频道收录后可以省略前两步，直接搜索安装。安装完成后，运行下面任一命令启用配色：
+包被默认频道收录后可以省略前两步，直接搜索安装。安装完成后，可以分别启用 UI 主题和代码配色：
 
+- `VS Code Dark Modern: Select UI Theme`
 - `VS Code Dark Modern: Select Enhanced Color Scheme`
 - `Preferences: Select Color Scheme`，然后选择 **VS Code Dark Modern Enhanced**
 
@@ -49,11 +50,11 @@ python tools/build_theme.py --check
 
 编辑器交互颜色通过 `mappings/sublime_ui_overrides.json` 保留并调整 Sublime 配色的设置：当前行背景 `#2A2D2E`、活动行号文字 `#CCCCCC`、光标 `#AEAFAD`、括号匹配下划线 `#FFFFFF`、选区及边框 `#264F78`。这些覆盖项同样会记录在 `theme-build-report.json` 中，重新构建不会丢失。
 
-### 与旧版主题共存
+### UI 主题与配色
 
-本包使用独立名称，不会覆盖 `Packages/User/VS Code Dark Modern.sublime-color-scheme`。旧配色可以继续保留、切换和对照。
+本包同时提供 `VS Code Dark Modern.sublime-theme` UI 主题和独立命名的 `VS Code Dark Modern Enhanced.sublime-color-scheme` 配色，不会覆盖 `Packages/User/VS Code Dark Modern.sublime-color-scheme`。旧配色可以继续保留、切换和对照。
 
-`.sublime-theme` 控制 Sublime 界面，`.sublime-color-scheme` 控制编辑区代码颜色，两者可以混合使用。如果已经有 `VS Code Dark Modern.sublime-theme`，可以在 Preferences 设置中保留旧 UI 主题，同时启用增强配色：
+`.sublime-theme` 控制 Sublime 界面，`.sublime-color-scheme` 控制编辑区代码颜色，两者可以混合使用。运行两个选择命令即可完整启用，也可以在 Preferences 设置中手动配置：
 
 ```json
 {
@@ -86,6 +87,7 @@ LaTeX/TeX 覆盖命令、宏、环境、章节、参数、引用、citation、�
 
 ## 命令
 
+- `VS Code Dark Modern: Select UI Theme`
 - `VS Code Dark Modern: Select Enhanced Color Scheme`
 - `VS Code Dark Modern: Inspect Highlight`：显示光标下文本的 Sublime scopes、可用的语义 token、命中规则与颜色来源。
 - `VS Code Dark Modern: Check Semantic Highlighting`：检查 LSP 语义高亮的可用状态并给出配置提示。
@@ -94,7 +96,7 @@ LaTeX/TeX 覆盖命令、宏、环境、章节、参数、引用、citation、�
 
 基础方案是静态 `.sublime-color-scheme`，打开、滚动和编辑不会触发本包的全缓冲区扫描。超大文件的语法高亮策略由 Sublime 管理；若启用了 LSP，额外 CPU、内存和索引时间来自语言服务器。为避免输入延迟，本包不实现 `on_modified` 分析器，也不以 regions 覆盖常规前景色。
 
-此包只提供编辑区和代码高亮，不尝试复刻 VS Code 的 Activity Bar、Chat、侧栏、标签栏等 UI。构建报告会列出这些无法映射到 Sublime color scheme 的 UI 色。
+UI 主题会调整标题栏、标签栏、侧栏、面板、状态栏和快速面板等 Sublime 界面元素，但不会复刻 VS Code 的 Activity Bar 或 Chat。构建报告会列出无法映射到 Sublime color scheme 的 UI 色。
 
 ## 颜色来源与许可证
 
