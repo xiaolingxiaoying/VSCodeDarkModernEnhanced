@@ -190,6 +190,29 @@ class IntegrationTests(unittest.TestCase):
         self.assertGreater(self.report["generated_rule_count"], 50)
         self.assertTrue(any(rule.get("background") == build_theme.LSP_ACTIVATION_BACKGROUND for rule in self.scheme["rules"]))
 
+    def test_legacy_sublime_ui_colors_are_applied(self) -> None:
+        expected = {
+            "gutter_foreground_highlight": "#CCCCCC",
+            "caret": "#AEAFAD",
+            "brackets_options": "underline",
+            "brackets_foreground": "#D7BA7D",
+            "bracket_contents_options": "underline",
+            "bracket_contents_foreground": "#D7BA7D",
+            "selection": "#264F78",
+            "selection_border": "#264F78",
+        }
+        self.assertEqual(
+            {name: self.scheme["globals"].get(name) for name in expected},
+            expected,
+        )
+        provenance = {
+            entry["name"]: entry
+            for entry in self.report["provenance"]
+            if entry["kind"] == "sublime-global-override"
+        }
+        self.assertEqual(set(provenance), set(expected))
+        self.assertTrue(all(entry["mapping"] == "mappings/sublime_ui_overrides.json" for entry in provenance.values()))
+
     def test_every_generated_syntax_color_has_source_provenance(self) -> None:
         source_colors = self._all_source_colors(ROOT / "dark_modern.json")
         generated_colors = {
@@ -198,10 +221,23 @@ class IntegrationTests(unittest.TestCase):
             for key, value in rule.items()
             if key in {"foreground", "background"}
         }
-        generated_colors.update(self.scheme["globals"].values())
-        self.assertTrue(generated_colors - source_colors <= {build_theme.LSP_ACTIVATION_BACKGROUND})
+        override_colors = {
+            entry["value"]
+            for entry in self.report["provenance"]
+            if entry["kind"] == "sublime-global-override" and entry["value"].startswith("#")
+        }
+        generated_colors.update(
+            value for value in self.scheme["globals"].values() if value.startswith("#")
+        )
+        self.assertTrue(
+            generated_colors - source_colors
+            <= override_colors | {build_theme.LSP_ACTIVATION_BACKGROUND}
+        )
 
-        source_backed = [entry for entry in self.report["provenance"] if entry["kind"] != "lsp-activation"]
+        source_backed = [
+            entry for entry in self.report["provenance"]
+            if entry["kind"] not in {"lsp-activation", "sublime-global-override"}
+        ]
         for entry in source_backed:
             for key in ("foreground", "background", "color"):
                 if entry.get(key) is not None:
