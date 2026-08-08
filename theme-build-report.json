@@ -241,7 +241,7 @@
             "name": "brackets_foreground",
             "source": "Packages/User/VS Code Dark Modern.sublime-color-scheme",
             "mapping": "mappings/sublime_ui_overrides.json",
-            "value": "#D7BA7D"
+            "value": "#FFFFFF"
         },
         {
             "kind": "sublime-global-override",
@@ -255,7 +255,7 @@
             "name": "bracket_contents_foreground",
             "source": "Packages/User/VS Code Dark Modern.sublime-color-scheme",
             "mapping": "mappings/sublime_ui_overrides.json",
-            "value": "#D7BA7D"
+            "value": "#FFFFFF"
         },
         {
             "kind": "sublime-global-override",

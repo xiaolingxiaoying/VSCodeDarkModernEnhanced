@@ -80,9 +80,9 @@ class PackageContractTests(unittest.TestCase):
             "gutter_foreground_highlight": "#CCCCCC",
             "caret": "#AEAFAD",
             "brackets_options": "underline",
-            "brackets_foreground": "#D7BA7D",
+            "brackets_foreground": "#FFFFFF",
             "bracket_contents_options": "underline",
-            "bracket_contents_foreground": "#D7BA7D",
+            "bracket_contents_foreground": "#FFFFFF",
             "selection": "#264F78",
             "selection_border": "#264F78",
         }
