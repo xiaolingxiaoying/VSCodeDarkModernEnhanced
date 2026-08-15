@@ -4,6 +4,10 @@
         "command": "vscode_dark_modern_select_enhanced_color_scheme"
     },
     {
+        "caption": "VS Code Dark Modern: Select Monokai Enhanced Color Scheme",
+        "command": "vscode_dark_modern_select_monokai_enhanced_color_scheme"
+    },
+    {
         "caption": "VS Code Dark Modern: Select UI Theme",
         "command": "vscode_dark_modern_select_ui_theme"
     },

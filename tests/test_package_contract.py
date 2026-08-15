@@ -21,6 +21,7 @@ class PackageContractTests(unittest.TestCase):
     def test_required_runtime_resources_exist(self) -> None:
         required = {
             "VS Code Dark Modern Enhanced.sublime-color-scheme",
+            "Monokai Enhanced.sublime-color-scheme",
             "VS Code Dark Modern.sublime-theme",
             "tab_square_highlight_thin.png",
             "VS Code Dark Modern Enhanced.sublime-commands",
@@ -97,6 +98,54 @@ class PackageContractTests(unittest.TestCase):
         self.assertEqual(
             {name: self.scheme["globals"].get(name) for name in expected},
             expected,
+        )
+
+
+class MonokaiEnhancedContractTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.scheme = json.loads((ROOT / "Monokai Enhanced.sublime-color-scheme").read_text(encoding="utf-8"))
+        cls.rules = cls.scheme["rules"]
+
+    def test_classic_monokai_base_and_globals_are_declared(self) -> None:
+        self.assertEqual(self.scheme["name"], "Monokai Enhanced")
+        self.assertEqual(
+            self.scheme["extends"],
+            "Packages/Color Scheme - Default/Monokai.sublime-color-scheme",
+        )
+        self.assertEqual(self.scheme["globals"]["background"], "var(black3)")
+        self.assertEqual(self.scheme["globals"]["selection"], "var(grey)")
+        self.assertEqual(self.scheme["globals"]["caret"], "color(var(white2) alpha(0.9))")
+
+    def test_semantic_categories_and_document_enhancements_are_covered(self) -> None:
+        selectors = " ".join(rule["scope"] for rule in self.rules)
+        required_semantic = {
+            "meta.semantic-token.function",
+            "meta.semantic-token.method",
+            "meta.semantic-token.macro",
+            "meta.semantic-token.type",
+            "meta.semantic-token.class",
+            "meta.semantic-token.parameter",
+            "meta.semantic-token.property",
+            "meta.semantic-token.enummember",
+            "meta.semantic-token.variable.readonly",
+            "meta.semantic-token.newoperator",
+        }
+        self.assertFalse([scope for scope in required_semantic if scope not in selectors])
+        names = {rule.get("name") for rule in self.rules}
+        self.assertTrue(
+            {
+                "Markdown links and URLs",
+                "LaTeX commands",
+                "LSP semantic highlighting activation",
+            }.issubset(names)
+        )
+
+    def test_selection_command_is_packaged(self) -> None:
+        commands = json.loads((ROOT / "VS Code Dark Modern Enhanced.sublime-commands").read_text(encoding="utf-8"))
+        self.assertIn(
+            "vscode_dark_modern_select_monokai_enhanced_color_scheme",
+            {entry["command"] for entry in commands},
         )
 
 

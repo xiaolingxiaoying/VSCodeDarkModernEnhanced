@@ -17,6 +17,8 @@ import sublime_plugin
 
 THEME_FILE = "VS Code Dark Modern Enhanced.sublime-color-scheme"
 FALLBACK_THEME_RESOURCE = "Packages/VS Code Dark Modern Enhanced/" + THEME_FILE
+MONOKAI_THEME_FILE = "Monokai Enhanced.sublime-color-scheme"
+MONOKAI_FALLBACK_THEME_RESOURCE = "Packages/VS Code Dark Modern Enhanced/" + MONOKAI_THEME_FILE
 UI_THEME_FILE = "VS Code Dark Modern.sublime-theme"
 LSP_SETTINGS_FILE = "LSP.sublime-settings"
 REPORT_FILE = "theme-build-report.json"
@@ -26,6 +28,12 @@ def _theme_resource() -> str:
     """Find the packaged scheme instead of assuming the package directory."""
     resources = sublime.find_resources(THEME_FILE)
     return resources[0] if resources else FALLBACK_THEME_RESOURCE
+
+
+def _monokai_theme_resource() -> str:
+    """Find the packaged Monokai companion scheme."""
+    resources = sublime.find_resources(MONOKAI_THEME_FILE)
+    return resources[0] if resources else MONOKAI_FALLBACK_THEME_RESOURCE
 
 
 def _selected_point(view: sublime.View) -> int:
@@ -115,6 +123,16 @@ class VscodeDarkModernSelectEnhancedColorSchemeCommand(sublime_plugin.Applicatio
         settings.set("color_scheme", _theme_resource())
         sublime.save_settings("Preferences.sublime-settings")
         sublime.status_message("VS Code Dark Modern Enhanced color scheme selected")
+
+
+class VscodeDarkModernSelectMonokaiEnhancedColorSchemeCommand(sublime_plugin.ApplicationCommand):
+    """Select the package's Monokai-based enhanced color scheme globally."""
+
+    def run(self) -> None:
+        settings = sublime.load_settings("Preferences.sublime-settings")
+        settings.set("color_scheme", _monokai_theme_resource())
+        sublime.save_settings("Preferences.sublime-settings")
+        sublime.status_message("Monokai Enhanced color scheme selected")
 
 
 class VscodeDarkModernSelectUiThemeCommand(sublime_plugin.ApplicationCommand):
