@@ -18,6 +18,7 @@
 
 - `VS Code Dark Modern: Select UI Theme`
 - `VS Code Dark Modern: Select Enhanced Color Scheme`
+- `VS Code Dark Modern: Select Monokai Enhanced Color Scheme`
 - `Preferences: Select Color Scheme`，然后选择 **VS Code Dark Modern Enhanced**
 
 ### 从源码安装
@@ -91,6 +92,12 @@ LaTeX/TeX 覆盖命令、宏、环境、章节、参数、引用、citation、�
 - `VS Code Dark Modern: Select Enhanced Color Scheme`
 - `VS Code Dark Modern: Inspect Highlight`：显示光标下文本的 Sublime scopes、可用的语义 token、命中规则与颜色来源。
 - `VS Code Dark Modern: Check Semantic Highlighting`：检查 LSP 语义高亮的可用状态并给出配置提示。
+
+## Monokai Enhanced 配色
+
+**Monokai Enhanced** 是独立的代码配色方案，使用 Sublime Text 内置经典 Monokai 的背景、交互色和语法色板，同时保留本包针对常见 TextMate scopes、Markdown、LaTeX 以及 LSP semantic tokens 的增强覆盖。它可以与 `VS Code Dark Modern.sublime-theme` UI 主题搭配使用；切换它不会改动 **VS Code Dark Modern Enhanced**，两者可随时对照切换。
+
+可通过 `VS Code Dark Modern: Select Monokai Enhanced Color Scheme` 选择，或在 `Preferences: Select Color Scheme` 中选择 **Monokai Enhanced**。LSP 语义高亮仍需安装 LSP 与对应语言服务器，并在 `LSP.sublime-settings` 中设置 `"semantic_highlighting": true`。
 
 ## 性能与边界
 
