@@ -59,6 +59,33 @@ class PackageContractTests(unittest.TestCase):
         }
         self.assertFalse([path for path in expected if not path.is_file()])
 
+    def test_ui_theme_maps_common_sidebar_file_types_to_packaged_icons(self) -> None:
+        manifest = json.loads(
+            (ROOT / "VS Code Dark Modern.sublime-file-icons").read_text(encoding="utf-8")
+        )
+        expected = {
+            "py": "file_type_source",
+            "md": "file_type_markup",
+            "json": "file_type_source",
+            "sublime-theme": "file_type_source",
+            ".gitignore": "file_type_text",
+        }
+        self.assertEqual(
+            {extension: manifest["icons"].get(extension) for extension in expected},
+            expected,
+        )
+        for icon_name in set(manifest["icons"].values()):
+            self.assertTrue((ROOT / "icons" / f"{icon_name}.png").is_file(), icon_name)
+
+        theme = json.loads((ROOT / "VS Code Dark Modern.sublime-theme").read_text(encoding="utf-8"))
+        icon_rules = [rule for rule in theme["rules"] if rule.get("class") == "icon_file_type"]
+        self.assertEqual(icon_rules, [{
+            "class": "icon_file_type",
+            "layer0.tint": "#CCCCCC",
+            "layer0.opacity": 0.5,
+            "content_margin": [9, 8],
+        }])
+
     def test_no_continuous_buffer_processing_hooks(self) -> None:
         plugin = (ROOT / "dark_modern_enhanced.py").read_text(encoding="utf-8")
         forbidden = ("on_modified", "add_regions(", "find_all(")
