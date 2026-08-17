@@ -20,6 +20,7 @@ FALLBACK_THEME_RESOURCE = "Packages/VS Code Dark Modern Enhanced/" + THEME_FILE
 MONOKAI_THEME_FILE = "Monokai Enhanced.sublime-color-scheme"
 MONOKAI_FALLBACK_THEME_RESOURCE = "Packages/VS Code Dark Modern Enhanced/" + MONOKAI_THEME_FILE
 UI_THEME_FILE = "VS Code Dark Modern.sublime-theme"
+FILE_ICON_THEME = "VS Code Dark Modern"
 LSP_SETTINGS_FILE = "LSP.sublime-settings"
 REPORT_FILE = "theme-build-report.json"
 
@@ -141,6 +142,7 @@ class VscodeDarkModernSelectUiThemeCommand(sublime_plugin.ApplicationCommand):
     def run(self) -> None:
         settings = sublime.load_settings("Preferences.sublime-settings")
         settings.set("theme", UI_THEME_FILE)
+        settings.set("file_icon_theme", FILE_ICON_THEME)
         sublime.save_settings("Preferences.sublime-settings")
         sublime.status_message("VS Code Dark Modern UI theme selected")
 
