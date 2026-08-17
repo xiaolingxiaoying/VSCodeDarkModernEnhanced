@@ -41,6 +41,24 @@ class PackageContractTests(unittest.TestCase):
         self.assertIn("tab_square_highlight_thin.png", textures)
         self.assertFalse([texture for texture in textures if texture and texture.startswith("User/")])
 
+    def test_packaged_sidebar_file_icons_include_all_scale_variants(self) -> None:
+        icon_names = {
+            "binary",
+            "css",
+            "default",
+            "image",
+            "markup",
+            "source",
+            "text",
+        }
+        scale_suffixes = ("", "@2x", "@3x")
+        expected = {
+            ROOT / "icons" / f"file_type_{name}{suffix}.png"
+            for name in icon_names
+            for suffix in scale_suffixes
+        }
+        self.assertFalse([path for path in expected if not path.is_file()])
+
     def test_no_continuous_buffer_processing_hooks(self) -> None:
         plugin = (ROOT / "dark_modern_enhanced.py").read_text(encoding="utf-8")
         forbidden = ("on_modified", "add_regions(", "find_all(")

@@ -12,9 +12,9 @@
 
 1. 打开 Command Palette，运行 `Package Control: Add Repository`。
 2. 输入 `https://github.com/xiaolingxiaoying/VSCodeDarkModernEnhanced`（末尾不要加 `.git`）。
-3. 再运行 `Package Control: Install Package`，搜索并安装 **VS Code Dark Modern Enhanced**。
+3. 再运行 `Package Control: Install Package`，搜索并安装 **VSCodeDarkModernEnhanced**。
 
-包被默认频道收录后可以省略前两步，直接搜索安装。安装完成后，可以分别启用 UI 主题和代码配色：
+GitHub 直装时，Package Control 使用仓库名作为包名，因此搜索名不包含空格。若该包已经安装，它不会再次作为 `Install Package` 的候选出现；请使用 `Package Control: List Packages` 确认，或使用 `Package Control: Remove Package` 后重新安装。包被默认频道收录后可以省略前两步，直接搜索安装。安装完成后，可以分别启用 UI 主题和代码配色：
 
 - `VS Code Dark Modern: Select UI Theme`
 - `VS Code Dark Modern: Select Enhanced Color Scheme`
@@ -108,6 +108,8 @@ UI 主题会调整标题栏、标签栏、侧栏、面板、状态栏和快速�
 ## 颜色来源与许可证
 
 配色源文件来自 [microsoft/vscode](https://github.com/microsoft/vscode) 的 Dark Modern / Dark+ / Dark (Visual Studio) 主题链，并受其 [MIT License](https://github.com/microsoft/vscode/blob/main/LICENSE.txt) 约束。本仓库的适配代码和文档同样以 MIT License 发布；详见 [LICENSE](LICENSE)。
+
+侧栏通用文件图标位于 `icons/`，包含 `file_type_default`、`source`、`text`、`markup`、`css`、`image` 和 `binary` 的 1×、2×、3×资源。这些 PNG 与 Sublime Text Build 4200 内置 `Theme - Default` 包中的对应资源一致，随本包提供以避免依赖 `Packages/User/icons/` 的本地覆盖；在公开发布前应确认其再分发许可。
 
 发布到 Package Control 时不要提交 `package-metadata.json`；该文件由 Package Control 在安装阶段自动生成。仓库应通过语义化 Git tag 发布，并在 Package Control 默认 channel 中声明 `sublime_text: ">=4095"`。
 
