@@ -1,6 +1,8 @@
 VS Code Dark Modern Enhanced installed
 
-Choose Preferences > Select Color Scheme > VS Code Dark Modern Enhanced.
+Choose Preferences > Select Theme > VS Code Dark Modern, then Preferences > Select Color Scheme > VS Code Dark Modern Enhanced.
+
+The bundled VS Code Dark Modern UI theme also activates its matching sidebar file icon theme.
 
 The theme works with Sublime's built-in syntax highlighting. For optional semantic highlighting, install the LSP package and a language server, then enable "semantic_highlighting": true in LSP settings.
 

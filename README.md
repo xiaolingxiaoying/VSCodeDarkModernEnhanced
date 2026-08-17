@@ -60,9 +60,12 @@ python tools/build_theme.py --check
 ```json
 {
     "theme": "VS Code Dark Modern.sublime-theme",
+    "file_icon_theme": "VS Code Dark Modern",
     "color_scheme": "VS Code Dark Modern Enhanced.sublime-color-scheme"
 }
 ```
+
+`VS Code Dark Modern: Select UI Theme` 会同时启用同名的侧栏文件图标主题。手动配置主题时，请保留上面的 `file_icon_theme` 设置。
 
 ## LSP 语义高亮（可选）
 

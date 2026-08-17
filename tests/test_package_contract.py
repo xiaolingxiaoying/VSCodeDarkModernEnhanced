@@ -86,6 +86,11 @@ class PackageContractTests(unittest.TestCase):
             "content_margin": [9, 8],
         }])
 
+    def test_ui_theme_command_activates_its_file_icon_theme(self) -> None:
+        plugin = (ROOT / "dark_modern_enhanced.py").read_text(encoding="utf-8")
+        self.assertIn('FILE_ICON_THEME = "VS Code Dark Modern"', plugin)
+        self.assertIn('settings.set("file_icon_theme", FILE_ICON_THEME)', plugin)
+
     def test_no_continuous_buffer_processing_hooks(self) -> None:
         plugin = (ROOT / "dark_modern_enhanced.py").read_text(encoding="utf-8")
         forbidden = ("on_modified", "add_regions(", "find_all(")
